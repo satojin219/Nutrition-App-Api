@@ -11,6 +11,7 @@ type DishData {
 
 type Menu {
   id: ID!
+  userId: ID!
   recipeName: String
   imgUrl: String
   foodstuffs: [Foodstuff]
@@ -19,6 +20,8 @@ type Menu {
   tips: String
   cost: Int
   time: Int
+  type: String
+  createdAt: String
 }
 
 type Foodstuff {
@@ -69,13 +72,14 @@ type Nutrition {
   biotin: Int #ビオチン
 }
 
-
 input CrateMenuInput {
   recipeName: String
   imgUrl: String
   tips: String
   cost: Int
   time: Int
+  type: String
+  createdAt: String
 }
 
 input UpdateMenuInput {
@@ -85,6 +89,8 @@ input UpdateMenuInput {
   tips: String
   cost: Int
   time: Int
+  type: String
+  createdAt: String
 }
 
 input CreateFoodstuffInput {

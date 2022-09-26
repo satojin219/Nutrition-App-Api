@@ -58,6 +58,7 @@ type ComplexityRoot struct {
 
 	Menu struct {
 		Cost           func(childComplexity int) int
+		CreatedAt      func(childComplexity int) int
 		Foodstuffs     func(childComplexity int) int
 		ID             func(childComplexity int) int
 		ImgURL         func(childComplexity int) int
@@ -66,6 +67,8 @@ type ComplexityRoot struct {
 		Time           func(childComplexity int) int
 		Tips           func(childComplexity int) int
 		TotalNutrition func(childComplexity int) int
+		Type           func(childComplexity int) int
+		UserID         func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -201,6 +204,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Menu.Cost(childComplexity), true
 
+	case "Menu.createdAt":
+		if e.complexity.Menu.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Menu.CreatedAt(childComplexity), true
+
 	case "Menu.foodstuffs":
 		if e.complexity.Menu.Foodstuffs == nil {
 			break
@@ -256,6 +266,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Menu.TotalNutrition(childComplexity), true
+
+	case "Menu.type":
+		if e.complexity.Menu.Type == nil {
+			break
+		}
+
+		return e.complexity.Menu.Type(childComplexity), true
+
+	case "Menu.userId":
+		if e.complexity.Menu.UserID == nil {
+			break
+		}
+
+		return e.complexity.Menu.UserID(childComplexity), true
 
 	case "Mutation.createMenu":
 		if e.complexity.Mutation.CreateMenu == nil {
@@ -615,6 +639,7 @@ type DishData {
 
 type Menu {
   id: ID!
+  userId: ID!
   recipeName: String
   imgUrl: String
   foodstuffs: [Foodstuff]
@@ -623,6 +648,8 @@ type Menu {
   tips: String
   cost: Int
   time: Int
+  type: String
+  createdAt: String
 }
 
 type Foodstuff {
@@ -673,13 +700,14 @@ type Nutrition {
   biotin: Int #ビオチン
 }
 
-
 input CrateMenuInput {
   recipeName: String
   imgUrl: String
   tips: String
   cost: Int
   time: Int
+  type: String
+  createdAt: String
 }
 
 input UpdateMenuInput {
@@ -689,6 +717,8 @@ input UpdateMenuInput {
   tips: String
   cost: Int
   time: Int
+  type: String
+  createdAt: String
 }
 
 input CreateFoodstuffInput {
@@ -983,6 +1013,8 @@ func (ec *executionContext) fieldContext_DishData_breakfast(ctx context.Context,
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Menu_id(ctx, field)
+			case "userId":
+				return ec.fieldContext_Menu_userId(ctx, field)
 			case "recipeName":
 				return ec.fieldContext_Menu_recipeName(ctx, field)
 			case "imgUrl":
@@ -999,6 +1031,10 @@ func (ec *executionContext) fieldContext_DishData_breakfast(ctx context.Context,
 				return ec.fieldContext_Menu_cost(ctx, field)
 			case "time":
 				return ec.fieldContext_Menu_time(ctx, field)
+			case "type":
+				return ec.fieldContext_Menu_type(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Menu_createdAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Menu", field.Name)
 		},
@@ -1044,6 +1080,8 @@ func (ec *executionContext) fieldContext_DishData_lunch(ctx context.Context, fie
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Menu_id(ctx, field)
+			case "userId":
+				return ec.fieldContext_Menu_userId(ctx, field)
 			case "recipeName":
 				return ec.fieldContext_Menu_recipeName(ctx, field)
 			case "imgUrl":
@@ -1060,6 +1098,10 @@ func (ec *executionContext) fieldContext_DishData_lunch(ctx context.Context, fie
 				return ec.fieldContext_Menu_cost(ctx, field)
 			case "time":
 				return ec.fieldContext_Menu_time(ctx, field)
+			case "type":
+				return ec.fieldContext_Menu_type(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Menu_createdAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Menu", field.Name)
 		},
@@ -1105,6 +1147,8 @@ func (ec *executionContext) fieldContext_DishData_dinner(ctx context.Context, fi
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Menu_id(ctx, field)
+			case "userId":
+				return ec.fieldContext_Menu_userId(ctx, field)
 			case "recipeName":
 				return ec.fieldContext_Menu_recipeName(ctx, field)
 			case "imgUrl":
@@ -1121,6 +1165,10 @@ func (ec *executionContext) fieldContext_DishData_dinner(ctx context.Context, fi
 				return ec.fieldContext_Menu_cost(ctx, field)
 			case "time":
 				return ec.fieldContext_Menu_time(ctx, field)
+			case "type":
+				return ec.fieldContext_Menu_type(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Menu_createdAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Menu", field.Name)
 		},
@@ -1166,6 +1214,8 @@ func (ec *executionContext) fieldContext_DishData_snack(ctx context.Context, fie
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Menu_id(ctx, field)
+			case "userId":
+				return ec.fieldContext_Menu_userId(ctx, field)
 			case "recipeName":
 				return ec.fieldContext_Menu_recipeName(ctx, field)
 			case "imgUrl":
@@ -1182,6 +1232,10 @@ func (ec *executionContext) fieldContext_DishData_snack(ctx context.Context, fie
 				return ec.fieldContext_Menu_cost(ctx, field)
 			case "time":
 				return ec.fieldContext_Menu_time(ctx, field)
+			case "type":
+				return ec.fieldContext_Menu_type(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Menu_createdAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Menu", field.Name)
 		},
@@ -1456,6 +1510,50 @@ func (ec *executionContext) _Menu_id(ctx context.Context, field graphql.Collecte
 }
 
 func (ec *executionContext) fieldContext_Menu_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Menu",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Menu_userId(ctx context.Context, field graphql.CollectedField, obj *model.Menu) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Menu_userId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UserID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Menu_userId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Menu",
 		Field:      field,
@@ -1880,6 +1978,88 @@ func (ec *executionContext) fieldContext_Menu_time(ctx context.Context, field gr
 	return fc, nil
 }
 
+func (ec *executionContext) _Menu_type(ctx context.Context, field graphql.CollectedField, obj *model.Menu) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Menu_type(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Type, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Menu_type(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Menu",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Menu_createdAt(ctx context.Context, field graphql.CollectedField, obj *model.Menu) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Menu_createdAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Menu_createdAt(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Menu",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_createMenu(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_createMenu(ctx, field)
 	if err != nil {
@@ -1921,6 +2101,8 @@ func (ec *executionContext) fieldContext_Mutation_createMenu(ctx context.Context
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Menu_id(ctx, field)
+			case "userId":
+				return ec.fieldContext_Menu_userId(ctx, field)
 			case "recipeName":
 				return ec.fieldContext_Menu_recipeName(ctx, field)
 			case "imgUrl":
@@ -1937,6 +2119,10 @@ func (ec *executionContext) fieldContext_Mutation_createMenu(ctx context.Context
 				return ec.fieldContext_Menu_cost(ctx, field)
 			case "time":
 				return ec.fieldContext_Menu_time(ctx, field)
+			case "type":
+				return ec.fieldContext_Menu_type(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Menu_createdAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Menu", field.Name)
 		},
@@ -1996,6 +2182,8 @@ func (ec *executionContext) fieldContext_Mutation_UpdateMenu(ctx context.Context
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Menu_id(ctx, field)
+			case "userId":
+				return ec.fieldContext_Menu_userId(ctx, field)
 			case "recipeName":
 				return ec.fieldContext_Menu_recipeName(ctx, field)
 			case "imgUrl":
@@ -2012,6 +2200,10 @@ func (ec *executionContext) fieldContext_Mutation_UpdateMenu(ctx context.Context
 				return ec.fieldContext_Menu_cost(ctx, field)
 			case "time":
 				return ec.fieldContext_Menu_time(ctx, field)
+			case "type":
+				return ec.fieldContext_Menu_type(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Menu_createdAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Menu", field.Name)
 		},
@@ -5377,7 +5569,7 @@ func (ec *executionContext) unmarshalInputCrateMenuInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"recipeName", "imgUrl", "tips", "cost", "time"}
+	fieldsInOrder := [...]string{"recipeName", "imgUrl", "tips", "cost", "time", "type", "createdAt"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -5421,6 +5613,22 @@ func (ec *executionContext) unmarshalInputCrateMenuInput(ctx context.Context, ob
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("time"))
 			it.Time, err = ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "type":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
+			it.Type, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdAt"))
+			it.CreatedAt, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5845,7 +6053,7 @@ func (ec *executionContext) unmarshalInputUpdateMenuInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"id", "recipeName", "imgUrl", "tips", "cost", "time"}
+	fieldsInOrder := [...]string{"id", "recipeName", "imgUrl", "tips", "cost", "time", "type", "createdAt"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -5897,6 +6105,22 @@ func (ec *executionContext) unmarshalInputUpdateMenuInput(ctx context.Context, o
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("time"))
 			it.Time, err = ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "type":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
+			it.Type, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdAt"))
+			it.CreatedAt, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6328,6 +6552,13 @@ func (ec *executionContext) _Menu(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "userId":
+
+			out.Values[i] = ec._Menu_userId(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "recipeName":
 
 			out.Values[i] = ec._Menu_recipeName(ctx, field, obj)
@@ -6359,6 +6590,14 @@ func (ec *executionContext) _Menu(ctx context.Context, sel ast.SelectionSet, obj
 		case "time":
 
 			out.Values[i] = ec._Menu_time(ctx, field, obj)
+
+		case "type":
+
+			out.Values[i] = ec._Menu_type(ctx, field, obj)
+
+		case "createdAt":
+
+			out.Values[i] = ec._Menu_createdAt(ctx, field, obj)
 
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))

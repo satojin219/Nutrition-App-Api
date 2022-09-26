@@ -8,6 +8,8 @@ type CrateMenuInput struct {
 	Tips       *string `json:"tips"`
 	Cost       *int    `json:"cost"`
 	Time       *int    `json:"time"`
+	Type       *string `json:"type"`
+	CreatedAt  *string `json:"createdAt"`
 }
 
 type CreateFoodstuffInput struct {
@@ -72,6 +74,7 @@ type Foodstuff struct {
 
 type Menu struct {
 	ID             string       `json:"id"`
+	UserID         string       `json:"userId"`
 	RecipeName     *string      `json:"recipeName"`
 	ImgURL         *string      `json:"imgUrl"`
 	Foodstuffs     []*Foodstuff `json:"foodstuffs"`
@@ -80,6 +83,8 @@ type Menu struct {
 	Tips           *string      `json:"tips"`
 	Cost           *int         `json:"cost"`
 	Time           *int         `json:"time"`
+	Type           *string      `json:"type"`
+	CreatedAt      *string      `json:"createdAt"`
 }
 
 type Nutrition struct {
@@ -137,6 +142,8 @@ type UpdateMenuInput struct {
 	Tips       *string `json:"tips"`
 	Cost       *int    `json:"cost"`
 	Time       *int    `json:"time"`
+	Type       *string `json:"type"`
+	CreatedAt  *string `json:"createdAt"`
 }
 
 type UpdateNutritionInput struct {
