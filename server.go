@@ -2,6 +2,7 @@ package main
 
 import (
 	"Nutrition-App-Api/graph"
+	"Nutrition-App-Api/graph/external"
 	"Nutrition-App-Api/graph/generated"
 	"log"
 	"net/http"
@@ -18,8 +19,11 @@ func main() {
 	if port == "" {
 		port = defaultPort
 	}
-
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+	db, err := external.ConnectDatabase()
+	if err != nil {
+		panic(err)
+	}
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{DB: db}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)

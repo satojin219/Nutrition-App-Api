@@ -1,11 +1,13 @@
 package graph
 
-import "Nutrition-App-Api/graph/model"
+import (
+	"gorm.io/gorm"
+)
 
 // This file will not be regenerated automatically.
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
-type Resolver struct{
-	menu []*model.Menu
+type Resolver struct {
+	DB *gorm.DB
 }
